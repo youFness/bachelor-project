@@ -1,0 +1,43 @@
+{% extends 'users/base.html' %}
+
+{% block content %}
+
+<form class="p-4 p-md-5 border rounded-3 bg-light" method="POST">
+    {% csrf_token %}
+    <div class="form-floating mb-3">
+        <input type="email" name="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+        <label for="floatingInput">Email address</label>
+    </div>
+    <div class="form-floating mb-3">
+        <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password">
+        <label for="floatingPassword">Password</label>
+    </div>
+
+    <button class="w-100 btn btn-lg btn-primary" type="submit">Sign In</button>
+    <hr class="my-4">
+    <!-- <small class="text-muted">By clicking Sign up, you agree to the terms of use.</small> -->
+    <small class="text-muted">Register as an applicant <a href="{% url 'register-applicant' %}">Sign Up</a></small><br>
+    <small class="text-muted">Register as a recruiter <a href="{% url 'register-recruiter' %}">Sign Up</a></small>
+
+    <!-- Add social media buttons here -->
+    
+      
+
+</form>
+<div class="mt-4">
+    <small class="text-muted">Or connect with:</small><br>
+    
+    <a target="_blank" href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}" class="btn btn-primary">
+      <i class="fab fa-facebook"></i> Facebook
+    </a>
+    
+    <a target="_blank" href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}" class="btn btn-danger">
+      <i class="fab fa-google"></i> Google
+    </a>
+
+    <a target="_blank" href="{% url 'social:begin' 'github' %}?next={{ request.path }}" class="btn btn-secondary">
+        <i class="fab fa-github"></i> GitHub
+      </a>
+  </div>
+
+{% endblock content %}

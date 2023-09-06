@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="card mx-auto" style="width: 78rem;">
+    <div class="card-body">
+        <h5 class="card-title mb-3">All applicants for {{ job.title }} Position</h5>
+
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">First Name</th>
+                    <th scope="col">Surname</th>
+                    <th scope="col">Location</th>
+                    <th scope="col">Phone Number</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Job Position/Title</th>
+                    <th scope="col">Application Date</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody> 
+                {% for applicant in applicants %}
+                <tr>
+                    <td>{{ applicant.user.resume.first_name }}</td>
+                    <td>{{ applicant.user.resume.surname }}</td>
+                    <td>{{ applicant.user.resume.location }}</td>
+                    <td>{{ applicant.user.resume.phone_number }}</td>
+                    <td><a href="mailto:{{ applicant.user.email }}">{{ applicant.user.email }}</a></td>
+                    <td>{{ applicant.user.resume.job_title }}</td>
+                    <td>{{ applicant.timestamp }}</td>
+                    <td>
+                        <select name="status" class="form-control">
+                            {% for choice in applicant.status_choices %}
+                                <option value="{{ choice.0 }}" {% if choice.0 == applicant.status %}selected{% endif %}>{{ choice.1 }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    {% if applicant.user.resume.upload_resume %}
+                        <td><a target="_blank" href="{{ applicant.user.resume.upload_resume.url }}"><small>Download Resume</small></a></td>
+                    {% else %}
+                        <td>No resume available</td>
+                    {% endif %}                    
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block content %}
+
+<section>
+    <div class="p-5 mb-4 bg-light rounded-3">
+        <div class="container-fluid py-5">
+            <h2 class="display-5 fw-bold">{{ job.title }}</h2>
+            <p class="col-md-8 fs-5 mt-3">
+                {{ job.state }} | {{ job.job_type }} | {{ job.salary|intcomma }} DH
+            </p>
+            <div class="card-footer">
+                <small class="text-muted">created {{job.timestamp|naturaltime}}</small>
+            </div>
+            {% if has_applied == False %}
+                <a href="{% url 'apply-to-job' job.pk %}" class="btn btn-primary btn-lg">Apply Now</a>
+            {%else%}
+                <p><span class="text-danger">You have already applied for this</span></p>
+            {% endif %}
+
+        </div>
+    </div>
+</section>
+
+<div>
+    <section>
+        <h5>Job Description</h5>
+        <p>
+            {{ job.description }}
+        </p>
+    </section>
+</div><br>
+<div>
+    <section>
+        <h5>Job Requirements</h5>
+        <p>
+            {{ job.requirements }}
+        </p>
+    </section>
+</div><br>
+
+<div>
+    <section>
+        <h5>Ideal candidate</h5>
+        <p>
+            {{ job.ideal_candidate }}
+        </p>
+    </section>
+</div><br>
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    <div class="col">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">Social Media</h5>
+                <ul class="list-group">
+                    {% if job.company.facebook %}
+                    <li class="list-group-item">
+                        <a href="{{ company.facebook }}" target="_blank">
+                            <i class="fab fa-facebook-square" style="color: #4267B2;"></i> Facebook
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% if job.company.twitter %}
+                    <li class="list-group-item">
+                        <a href="{{ company.twitter }}" target="_blank">
+                            <i class="fab fa-twitter-square" style="color: rgb(0, 178, 254);"></i> Twitter
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% if job.company.linkedin %}
+                    <li class="list-group-item">
+                        <a href="{{ company.linkedin }}" target="_blank">
+                            <i class="fab fa-linkedin" style="color: #084c90;"></i> LinkedIn
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% if job.company.instagram %}
+                    <li class="list-group-item">
+                        <a href="{{ company.instagram }}" target="_blank">
+                            <i class="fab fa-instagram" style="color: #C13584;"></i> Instagram
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% if job.company.tiktok %}
+                    <li class="list-group-item">
+                        <a href="{{ company.tiktok }}" target="_blank">
+                            <i class="fab fa-tiktok" style="color: black;"></i> TikTok
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    
+    
+    <div class="col">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">About the Company</h5>
+                <p class="card-text">{{ job.company.name }}</p>
+                <p class="card-text">{{ job.company.city }}, {{ job.company.state }}</p>
+                <p class="card-text">{{ job.company.est_date }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">Related Jobs</h5>
+                {% if related_jobs %}
+                    {% for related_job in related_jobs %}
+                        <p class="card-text">{{ related_job.title }}</p>
+                        <p class="card-text">{{ related_job.company.name }}</p>
+                        <p class="card-text">{{ related_job.salary|intcomma }}</p>
+                        <a href="{% url 'job-details' related_job.pk %}" class="btn btn-primary">View Job</a>
+                    {% endfor %}
+                {% else %}
+                    <p class="card-text">No related jobs found.</p>
+                {% endif %}
+            </div>
+            <div class="card-footer">
+                {% if related_jobs %}
+                    <small class="text-muted">Posted recently</small>
+                {% else %}
+                    <small class="text-muted">No related jobs found.</small>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div><br>
+
+{% endblock content %}

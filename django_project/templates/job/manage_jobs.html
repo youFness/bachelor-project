@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="card mx-auto" style="width: 73rem;">
+    <div class="card-body">
+        <h5 class="card-title mb-3">Manage Jobs</h5>
+
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">Job title</th>
+                    <th scope="col">Location</th>
+                    <th scope="col">Salary DH</th>
+                    <th scope="col">No. of applicants</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for job in jobs %}
+                <tr>
+                    <td>{{ job.title }}</td>
+                    <td>{{ job.city }},{{job.state}}</td>
+                    <td>{{ job.salary }}</td>
+                    <td>{{ job.applyjob_set.all.count }} <a href="{% url 'all-applicants' job.pk %}"><small>view all</small></a></td>
+                    {% if job.is_available %}
+                        <td><span class="badge bg-warning">Active</span></td>
+                    {% else %}
+                        <td><span class="badge bg-warning">Not Active</span></td> 
+                    {% endif %}
+                    <td>
+                        <a href="{% url 'update-job' job.pk %}" class="btn btn-primary btn-sm">Modify</a>
+                        <form action="{% url 'delete-job' job.pk %}" method="post" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock content %}
